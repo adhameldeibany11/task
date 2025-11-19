@@ -278,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: EdgeInsets.only(right: 10.w),
                                 child: CustomTitleCard(
-                                  title1: service['name'] ?? '',
+                                  title1: service['title'] ?? '',
                                   title2: service['description'] ?? '',
                                   time: service['time'] ?? '',
                                   date: service['date'] ?? '',
@@ -435,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: EdgeInsets.only(right: 10.w),
                                 child: CustomTitleCard(
-                                  title1: service['name'] ?? '',
+                                  title1: service['title'] ?? '',
                                   title2: service['description'] ?? '',
                                   time: service['time'] ?? '',
                                   date: service['date'] ?? '',
@@ -520,7 +520,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: CustomCardHome(
                                   image: product['image'] ?? '',
-                                  title1: product['name'] ?? '',
+                                  title1: product['title'] ?? '',
                                   title2: product['description'] ?? '',
                                   price: product['price'] ?? '',
                                   cardColor: appColors.card1,
@@ -605,7 +605,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: CustomCardHome(
                                   image: product['image'] ?? '',
-                                  title1: product['name'] ?? '',
+                                  title1: product['title'] ?? '',
                                   title2: product['description'] ?? '',
                                   price: product['price'] ?? '',
                                   cardColor: appColors.card2,
