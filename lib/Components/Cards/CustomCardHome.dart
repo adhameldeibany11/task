@@ -94,6 +94,7 @@ class CustomCardHome extends StatelessWidget {
                     width: 160.w,
                     child: AutoSizeText(title1,
                       maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
