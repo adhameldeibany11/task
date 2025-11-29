@@ -2,7 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/View/Screens/Home/home_screen.dart';
-import 'Methods/Colors/colors.dart';
+import 'core/utils/app_colors.dart';
 
 TaskColors appColors = TaskColors();
 
@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'din',
+            ),
             home: HomeScreen()
         );
       },

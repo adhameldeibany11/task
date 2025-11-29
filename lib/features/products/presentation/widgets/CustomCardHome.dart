@@ -4,23 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:untitled/main.dart';
 
 class CustomCardHome extends StatelessWidget {
-  final String image;
-  final String title1;
-  final String title2;
-  final String price;
+  final Map<String, dynamic> data;
   final Color? cardColor;
 
   const CustomCardHome({
     Key? key,
-    required this.image,
-    required this.title1,
-    required this.title2,
-    required this.price,
+    required this.data,
     this.cardColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final image = (data['image'] ?? '') as String;
+    final price = (data['price'] ?? '') as String;
+    final title = (data['title'] ?? '') as String;
+    final description = (data['description'] ?? '') as String;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
@@ -57,7 +56,8 @@ class CustomCardHome extends StatelessWidget {
                 ),
                 if (price.isNotEmpty)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                     decoration: BoxDecoration(
                       color: appColors.background,
                       borderRadius: BorderRadius.only(
@@ -73,9 +73,11 @@ class CustomCardHome extends StatelessWidget {
                             appColors.second,
                             appColors.third,
                           ],
-                        ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
+                        ).createShader(
+                            Rect.fromLTWH(0, 0, bounds.width, bounds.height));
                       },
-                      child: Text(price,
+                      child: Text(
+                        price,
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -92,28 +94,28 @@ class CustomCardHome extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 160.w,
-                    child: AutoSizeText(title1,
+                    child: AutoSizeText(
+                      title.isNotEmpty ? title : 'اسم المنتج',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
                           color: appColors.primarytextcolor,
-                          fontFamily: 'din'
-                      ),
+                          fontFamily: 'din'),
                     ),
                   ),
                   SizedBox(
                     width: 150.w,
-                    child: AutoSizeText(title2,
+                    child: AutoSizeText(
+                      description.isNotEmpty ? description : 'وصف المنتج',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 10.sp,
                           color: appColors.secondtextcolor,
-                          fontFamily: 'din'
-                      ),
+                          fontFamily: 'din'),
                     ),
                   ),
                 ],

@@ -1,13 +1,16 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:untitled/Components/Cards/custom_title_card.dart';
-import 'package:untitled/Components/Cards/CustomCardHome.dart';
+import 'package:untitled/core/Components/section_header.dart';
+import 'package:untitled/features/banner/presentation/widgets/banner_widget.dart';
 import 'package:untitled/main.dart';
-import '../../../Network/api_service.dart';
+import '../../../core/databases/api/api_service.dart';
+import '../../../core/Components/home_header_widget.dart';
+import '../../../core/Components/products_widget.dart';
+import '../../../core/Components/services_widget.dart';
+import '../../../features/products/presentation/widgets/CustomCardHome.dart';
+import '../../../features/services/presentation/widgets/custom_title_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final ApiService apiService = ApiService();
 
-  List banners = [];
-  List products = [];
-  List services = [];
+  List<dynamic> banners = [];
+  List<dynamic> products = [];
+  List<dynamic> services = [];
 
   @override
   void initState() {
@@ -55,6 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SafeArea(
@@ -66,200 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   SizedBox(height: 17.h,),
-                  Padding(
-                    padding: EdgeInsets.only(left: 13.w, right: 13.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: (){},
-                              child: Container(
-                                  width: 43.sp,
-                                  height: 43.sp,
-                                  decoration: BoxDecoration(
-                                    color: appColors.background,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Image.asset('assets/images/qr.png',
-                                    width: 27.sp,
-                                    height: 27.sp,
-                                  ),
-                              ),
-                            ),
-                            SizedBox(width: 9.w,),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 150.w,
-                                  child: AutoSizeText('مرحبا بك مريم احمد',
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: appColors.primarytextcolor,
-                                      fontWeight: FontWeight.w400,
-                                        fontFamily: 'din'
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 150.w,
-                                  child: AutoSizeText('كيف حالك اليوم',
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: appColors.secondtextcolor,
-                                      fontWeight: FontWeight.w400,
-                                        fontFamily: 'din'
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: (){},
-                              child: Container(
-                                width: 43.sp,
-                                height: 43.sp,
-                                decoration: BoxDecoration(
-                                    color: appColors.background,
-                                    shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Image.asset('assets/images/bell.png',
-                                  width: 24.sp,
-                                  height: 24.sp,
-                                )
-                              ),
-                            ),
-                            SizedBox(width: 16.w,),
-                            InkWell(
-                              onTap: (){},
-                              child: Container(
-                                  width: 43.sp,
-                                  height: 43.sp,
-                                  decoration: BoxDecoration(
-                                    color: appColors.background,
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Image.asset('assets/images/cart.png',
-                                    width: 24.sp,
-                                    height: 24.sp,
-                                  )
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                  HomeHeaderWidget(),
                   SizedBox(height: 30.h,),
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.w),
-                    child: Container(
-                      height: 122.h,
-                      width: double.infinity,
-                      child: banners.isEmpty
-                          ? Center(child: CircularProgressIndicator())
-                          : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: banners.length,
-                        itemBuilder: (context, index) {
-                          final banner = banners[index];
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5.w),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
-                                banner['image'],
-                                width: 300.w,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  BannerWidget(banners: banners),
                   SizedBox(height: 30.h,),
-                  Padding(
-                    padding: EdgeInsets.only(left: 13.w, right: 13.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('الجلسه القادمه',
-                          style: TextStyle(
-                              fontSize: 16.sp
-                          ),
-                        ),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 67.w,
-                            height: 17.h,
-                            decoration: BoxDecoration(
-                              color: appColors.background,
-                              borderRadius: BorderRadius.circular(4.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 15,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) {
-                                  return LinearGradient(
-                                    colors: [
-                                      appColors.primary,
-                                      appColors.second,
-                                      appColors.third,
-                                    ],
-                                  ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
-                                },
-                                child: Text('عرض الكل',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'din'
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  SectionHeader(title: 'الجلسه القادمه', ViewAll: (){},),
                   SizedBox(height: 9.h,),
                   Padding(
                     padding: EdgeInsets.only(right: 8.w),
@@ -277,12 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               final service = services[index];
                               return Padding(
                                 padding: EdgeInsets.only(right: 10.w),
-                                child: CustomTitleCard(
-                                  title1: service['title'] ?? '',
-                                  title2: service['description'] ?? '',
-                                  time: service['time'] ?? '',
-                                  date: service['date'] ?? '',
-                                ),
+                                child: CustomTitleCard(data: service),
                               );
                             },
                           ),
@@ -296,127 +111,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 155.w,
-                            height: 74.h,
-                            decoration: BoxDecoration(
-                              color: appColors.card1,
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 7.w, right: 7.w, top: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      AutoSizeText('الخدمات',
-                                        style: TextStyle(
-                                            fontSize: 17.sp,
-                                            color: appColors.primarytextcolor,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'din'
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Image.asset('assets/images/image2.png'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        ServicesWidget(),
                         SizedBox(width: 16.w,),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 155.w,
-                            height: 74.h,
-                            decoration: BoxDecoration(
-                              color: appColors.card2,
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 7.w, right: 7.w, top: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      AutoSizeText('المنتجات',
-                                        style: TextStyle(
-                                            fontSize: 17.sp,
-                                            color: appColors.primarytextcolor,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'din'
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Image.asset('assets/images/image3.png'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        ProductsWidget(),
                       ],
                     ),
                   ),
                   SizedBox(height: 22.h,),
-                  Padding(
-                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('تذكيراتي',
-                          style: TextStyle(
-                              fontSize: 16.sp
-                          ),
-                        ),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 67.w,
-                            height: 17.h,
-                            decoration: BoxDecoration(
-                              color: appColors.background,
-                              borderRadius: BorderRadius.circular(4.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 15,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) {
-                                  return LinearGradient(
-                                    colors: [
-                                      appColors.primary,
-                                      appColors.second,
-                                      appColors.third,
-                                    ],
-                                  ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
-                                },
-                                child: Text('عرض الكل',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'din'
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  SectionHeader(title: 'تذكيراتي', ViewAll: (){},),
                   SizedBox(height: 9.h,),
                   Padding(
                     padding: EdgeInsets.only(right: 8.w),
@@ -434,12 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               final service = services[index];
                               return Padding(
                                 padding: EdgeInsets.only(right: 10.w),
-                                child: CustomTitleCard(
-                                  title1: service['title'] ?? '',
-                                  title2: service['description'] ?? '',
-                                  time: service['time'] ?? '',
-                                  date: service['date'] ?? '',
-                                ),
+                                child: CustomTitleCard(data: service),
                               );
                             },
                           ),
@@ -448,58 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 8.h,),
-                  Padding(
-                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('خدمات جديدا',
-                          style: TextStyle(
-                              fontSize: 16.sp
-                          ),
-                        ),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 67.w,
-                            height: 17.h,
-                            decoration: BoxDecoration(
-                              color: appColors.background,
-                              borderRadius: BorderRadius.circular(4.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 15,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) {
-                                  return LinearGradient(
-                                    colors: [
-                                      appColors.primary,
-                                      appColors.second,
-                                      appColors.third,
-                                    ],
-                                  ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
-                                },
-                                child: Text('عرض الكل',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'din'
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  SectionHeader(title: 'خدمات جديدا', ViewAll: (){},),
                   SizedBox(height: 25.h,),
                   Padding(
                     padding: EdgeInsets.only(right: 8.w),
@@ -519,10 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: CustomCardHome(
-                                  image: product['image'] ?? '',
-                                  title1: product['title'] ?? '',
-                                  title2: product['description'] ?? '',
-                                  price: product['price'] ?? '',
+                                  data: product,
                                   cardColor: appColors.card1,
                                 ),
                               );
@@ -533,58 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 16.h,),
-                  Padding(
-                    padding: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('افضل المنتجات',
-                          style: TextStyle(
-                              fontSize: 16.sp
-                          ),
-                        ),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: 67.w,
-                            height: 17.h,
-                            decoration: BoxDecoration(
-                              color: appColors.background,
-                              borderRadius: BorderRadius.circular(4.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 15,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: ShaderMask(
-                                shaderCallback: (bounds) {
-                                  return LinearGradient(
-                                    colors: [
-                                      appColors.primary,
-                                      appColors.second,
-                                      appColors.third,
-                                    ],
-                                  ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
-                                },
-                                child: Text('عرض الكل',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'din'
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  SectionHeader(title: 'افضل المنتجات', ViewAll: (){},),
                   SizedBox(height: 25.h,),
                   Padding(
                     padding: EdgeInsets.only(right: 8.w),
@@ -604,11 +196,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: CustomCardHome(
-                                  image: product['image'] ?? '',
-                                  title1: product['title'] ?? '',
-                                  title2: product['description'] ?? '',
-                                  price: product['price'] ?? '',
-                                  cardColor: appColors.card2,
+                                  data: product,
+                                  cardColor: appColors.card1,
                                 ),
                               );
                             },
